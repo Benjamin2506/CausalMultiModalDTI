@@ -433,13 +433,19 @@ This project is released under the MIT License.
 # Contact
 
 Roshan Kotkondawar
+
 St. Vincent Pallotti College of Engineering & Technology, India
-Email: [lncs@springer.com](mailto:lncs@springer.com)
+
+Email: [lncs@springer.com](kotkondawarroshan@gmail.com)
+
 ---
 
 Kunal Nicose
+
 VNIT, India
+
 Email: [kunal.nicose@outlook.com](mailto:kunal.nicose@outlook.com)
+
 ---
 
 # Acknowledgements
