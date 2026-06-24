@@ -1,0 +1,442 @@
+# ============================================================
+# Project Configuration
+# ============================================================
+
+project_name: "causal_multimodal_dti"
+
+experiment_name: "kiba_affinity_prediction"
+
+seed: 42
+
+device: "cuda"
+
+output_dir: "outputs/kiba"
+
+checkpoint_dir: "checkpoints/kiba"
+
+log_dir: "outputs/kiba/logs"
+
+# ============================================================
+# Dataset
+# ============================================================
+
+dataset:
+
+  name: "KIBA"
+
+  task: "regression"
+
+  raw_data_dir: "datasets/raw/kiba"
+
+  processed_data_dir: "datasets/processed"
+
+  processed_file: "kiba.pt"
+
+  smiles_column: "SMILES"
+
+  protein_column: "Target_Sequence"
+
+  label_column: "KIBA"
+
+  train_split: 0.80
+
+  val_split: 0.10
+
+  test_split: 0.10
+
+  stratified_split: false
+
+  remove_duplicates: true
+
+  cold_start_drug: false
+
+  cold_start_protein: false
+
+  max_protein_length: 1024
+
+  max_smiles_length: 256
+
+# ============================================================
+# Dataset Statistics
+# ============================================================
+
+dataset_statistics:
+
+  drugs: 2116
+
+  proteins: 229
+
+  interactions: 118254
+
+  target_type: "Kinases"
+
+  affinity_measure: "KIBA Score"
+
+  evaluation_focus: "Binding Affinity Prediction"
+
+# ============================================================
+# Molecular Graph Features
+# ============================================================
+
+molecule:
+
+  atom_features:
+
+    - atomic_number
+    - degree
+    - formal_charge
+    - hybridization
+    - aromaticity
+    - total_num_hs
+
+  bond_features:
+
+    - bond_type
+    - conjugation
+    - ring
+    - stereo
+
+# ============================================================
+# Graph Transformer Encoder
+# ============================================================
+
+graph_transformer:
+
+  input_dim: 9
+
+  hidden_dim: 256
+
+  output_dim: 256
+
+  num_layers: 6
+
+  num_heads: 8
+
+  dropout: 0.20
+
+  edge_dim: 32
+
+  activation: "gelu"
+
+  layer_norm: true
+
+  residual: true
+
+# ============================================================
+# Protein Encoder
+# ============================================================
+
+protein_encoder:
+
+  model_name: "esm2_t33_650M_UR50D"
+
+  embedding_dim: 1280
+
+  freeze_encoder: true
+
+  pooling: "mean"
+
+  max_length: 1024
+
+# ============================================================
+# Cross Modal Transformer
+# ============================================================
+
+cross_modal_transformer:
+
+  hidden_dim: 512
+
+  num_heads: 8
+
+  num_layers: 4
+
+  dropout: 0.20
+
+  activation: "gelu"
+
+  layer_norm: true
+
+  residual: true
+
+# ============================================================
+# Fusion Layer
+# ============================================================
+
+fusion:
+
+  fusion_type: "cross_attention"
+
+  fusion_dim: 512
+
+  dropout: 0.20
+
+# ============================================================
+# Causal Explainability Module
+# ============================================================
+
+causal_module:
+
+  enabled: true
+
+  intervention_probability: 0.10
+
+  perturbation_type: "feature_masking"
+
+  counterfactual_samples: 10
+
+  attribution_method: "integrated_gradients"
+
+# ============================================================
+# Uncertainty Quantification
+# ============================================================
+
+uncertainty:
+
+  enabled: true
+
+  method: "mc_dropout"
+
+  mc_samples: 30
+
+  dropout_rate: 0.20
+
+# ============================================================
+# Regression Prediction Head
+# ============================================================
+
+predictor:
+
+  hidden_dims:
+
+    - 512
+    - 256
+    - 128
+
+  dropout: 0.20
+
+  output_dim: 1
+
+  activation: "linear"
+
+# ============================================================
+# Training Configuration
+# ============================================================
+
+training:
+
+  batch_size: 128
+
+  epochs: 200
+
+  gradient_accumulation_steps: 1
+
+  mixed_precision: true
+
+  num_workers: 8
+
+  pin_memory: true
+
+  persistent_workers: true
+
+  gradient_clip_norm: 1.0
+
+# ============================================================
+# Optimizer
+# ============================================================
+
+optimizer:
+
+  type: "AdamW"
+
+  learning_rate: 0.00005
+
+  weight_decay: 0.00001
+
+  betas:
+
+    - 0.9
+    - 0.999
+
+# ============================================================
+# Learning Rate Scheduler
+# ============================================================
+
+scheduler:
+
+  type: "CosineAnnealingLR"
+
+  T_max: 200
+
+  eta_min: 0.0000005
+
+# ============================================================
+# Early Stopping
+# ============================================================
+
+early_stopping:
+
+  enabled: true
+
+  monitor: "val_ci"
+
+  patience: 20
+
+  mode: "max"
+
+# ============================================================
+# Loss Function
+# ============================================================
+
+loss:
+
+  regression_loss: "mse"
+
+  causal_regularization_weight: 0.10
+
+  uncertainty_regularization_weight: 0.05
+
+# ============================================================
+# Evaluation Metrics
+# ============================================================
+
+metrics:
+
+  - mse
+
+  - rmse
+
+  - mae
+
+  - ci
+
+  - pearson
+
+  - spearman
+
+  - r2
+
+# ============================================================
+# Explainability
+# ============================================================
+
+explainability:
+
+  generate_attention_maps: true
+
+  generate_attribution_maps: true
+
+  generate_counterfactual_analysis: true
+
+  save_top_k_features: 50
+
+# ============================================================
+# Calibration & Uncertainty
+# ============================================================
+
+calibration:
+
+  enabled: true
+
+  uncertainty_metrics:
+
+    - predictive_variance
+
+    - epistemic_uncertainty
+
+    - aleatoric_uncertainty
+
+# ============================================================
+# Checkpointing
+# ============================================================
+
+checkpoint:
+
+  save_top_k: 3
+
+  save_last: true
+
+  monitor: "val_ci"
+
+# ============================================================
+# Logging
+# ============================================================
+
+logging:
+
+  use_tensorboard: true
+
+  use_wandb: false
+
+  log_interval: 20
+
+  save_best_only: true
+
+# ============================================================
+# Reproducibility
+# ============================================================
+
+reproducibility:
+
+  deterministic: true
+
+  benchmark: false
+
+# ============================================================
+# Hardware
+# ============================================================
+
+hardware:
+
+  gpu_required: true
+
+  minimum_gpu_memory_gb: 12
+
+  recommended_gpu_memory_gb: 24
+
+# ============================================================
+# Inference Configuration
+# ============================================================
+
+inference:
+
+  batch_size: 256
+
+  mc_dropout_samples: 30
+
+  save_uncertainty_scores: true
+
+  save_attention_weights: true
+
+# ============================================================
+# Visualization
+# ============================================================
+
+visualization:
+
+  generate_pca: true
+
+  generate_tsne: true
+
+  generate_umap: true
+
+  generate_attention_heatmaps: true
+
+  generate_calibration_curves: true
+
+  generate_uncertainty_histograms: true
+
+# ============================================================
+# Molecular Docking Validation
+# ============================================================
+
+docking:
+
+  enabled: true
+
+  top_k_predictions: 100
+
+  docking_engine: "vina"
+
+  exhaustiveness: 8
+
+  num_modes: 10
