@@ -325,8 +325,6 @@ outputs/explainability/
 └── counterfactual_results.csv
 ```
 
----
-
 # Uncertainty Estimation
 
 Run uncertainty analysis:
@@ -344,34 +342,6 @@ outputs/calibration/
 ├── uncertainty_histogram.png
 ├── calibration_curve.png
 └── calibration_metrics.csv
-```
-
----
-
-# Visualization
-
-Generate latent space visualizations:
-
-```bash
-python figures/pca_tsne_umap.py
-```
-
-Generate cross-modal attention maps:
-
-```bash
-python figures/attention_heatmap.py
-```
-
-Generate attribution maps:
-
-```bash
-python figures/attribution_maps.py
-```
-
-Generate calibration curves:
-
-```bash
-python figures/calibration_curve.py
 ```
 
 ---
@@ -445,9 +415,9 @@ If you use this repository, please cite:
 
 ```bibtex
 @article{kotkondawar2026causalDTI,
-  title={A Causal Multi-Modal Transformer Framework with Uncertainty-Aware Explainability for Mechanistic Drug-Target Interaction Prediction},
+  title={A Causal Multi-Modal Transformer Framework with Uncertainty-Aware Explainability for Mechanistic DTI Prediction},
   author={Kotkondawar, Roshan and Nicose, Kunal},
-  journal={Under Review},
+  journal={--},
   year={2026}
 }
 ```
@@ -463,19 +433,13 @@ This project is released under the MIT License.
 # Contact
 
 Roshan Kotkondawar
-
-Princeton University, USA
-
+St. Vincent Pallotti College of Engineering & Technology, India
 Email: [lncs@springer.com](mailto:lncs@springer.com)
-
 ---
 
 Kunal Nicose
-
-Visvesvaraya National Institute of Technology, Nagpur, India
-
+VNIT, India
 Email: [kunal.nicose@outlook.com](mailto:kunal.nicose@outlook.com)
-
 ---
 
 # Acknowledgements
