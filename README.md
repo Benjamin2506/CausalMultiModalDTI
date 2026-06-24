@@ -1,4 +1,4 @@
-# Causal Multi-Modal Transformer Framework for Drug–Target Interaction Prediction
+# Causal Multi-Modal Transformer for Drug–Target Interaction Prediction System
 
 ## Overview
 
